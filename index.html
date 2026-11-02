@@ -82,9 +82,9 @@ a.btn.o{background:none;color:var(--acc);border:1px solid var(--acc)}
 <header>
   <button id="theme" aria-label="Ganti tema">◐</button>
   <span class="tag">Internship · PUI-PT Intelligent Sensing-IoT</span>
-  <h1>🔐 Smart Door System</h1>
-  <p class="sub">Akses kontrol dua faktor: pintu hanya terbuka kalau <b>kartu RFID</b> dan <b>wajah</b> sama-sama cocok. Dibuat oleh Nabila Hatami Putri, Teknik Telekomunikasi, Universitas Telkom.</p>
-  <div class="chips"><span class="chip">🐍 Python</span><span class="chip">👁️ OpenCV</span><span class="chip">🧠 face_recognition</span><span class="chip">🖥️ PyQt5</span><span class="chip">📡 PySerial</span><span class="chip">🔌 Arduino</span></div>
+  <h1>Smart Door System</h1>
+  <p class="sub">Akses kontrol dua faktor: pintu hanya terbuka kalau <b>kartu RFID</b>dan <b>wajah</b>sama-sama cocok. Dibuat oleh Nabila Hatami Putri, Teknik Telekomunikasi, Universitas Telkom.</p>
+  <div class="chips"><span class="chip">Python</span><span class="chip">OpenCV</span><span class="chip">face_recognition</span><span class="chip">PyQt5</span><span class="chip">PySerial</span><span class="chip">Arduino</span></div>
 </header>
 
 <nav role="tablist">
@@ -103,16 +103,16 @@ a.btn.o{background:none;color:var(--acc);border:1px solid var(--acc)}
   </div>
   <div class="card"><h2>Masalahnya</h2><p>Kartu akses saja bisa dipinjam atau dicuri, sedangkan wajah saja bisa salah dikenali. Proyek ini menggabungkan keduanya supaya hanya orang yang benar-benar terverifikasi yang bisa masuk, sekaligus mencatat log akses secara real-time.</p></div>
   <div class="card"><h2>Peranku</h2><ul><li>Membuat dan menguji sistem pengenalan wajah dengan OpenCV</li><li>Membuat pembacaan kartu RFID lewat komunikasi serial</li><li>Mengintegrasikan keduanya menjadi autentikasi ganda</li><li>Troubleshooting, dokumentasi, dan laporan akhir</li></ul><p class="note">Pembimbing lapangan: Shafa Tanaya Paramesti, S.T. dan Muhammad Surya Sanjiwani, S.T.</p></div>
-  <p>Coba tab <b>Alur &amp; Simulasi</b> untuk melihat sistemnya bekerja. 👆</p>
+  <p>Coba tab <b>Alur &amp; Simulasi</b>untuk melihat sistemnya bekerja. </p>
 </section>
 
 <section id="b">
   <h2>Alur sistem</h2>
   <p class="note">Ketuk setiap kotak untuk melihat penjelasannya, atau jalankan simulasi di bawah.</p>
   <div class="sim">
-    <button data-s="ok">✅ Kartu valid + wajah cocok</button>
-    <button data-s="face">⚠️ Kartu valid, wajah beda</button>
-    <button data-s="card">🚫 Kartu tidak dikenal</button>
+    <button data-s="ok">Kartu valid + wajah cocok</button>
+    <button data-s="face">Kartu valid, wajah beda</button>
+    <button data-s="card">Kartu tidak dikenal</button>
   </div>
   <div class="flow" id="flow"></div>
   <div id="res">Pilih skenario untuk memulai simulasi.</div>
@@ -133,14 +133,14 @@ a.btn.o{background:none;color:var(--acc);border:1px solid var(--acc)}
   <div id="ch"></div>
   <h2>Yang kupelajari</h2>
   <div class="grid">
-    <div class="card">🐍 Python untuk IoT dan computer vision</div>
-    <div class="card">📡 Komunikasi serial perangkat keras ke Python</div>
-    <div class="card">🖥️ GUI desktop dengan PyQt5</div>
-    <div class="card">🧩 Integrasi hardware-software dan troubleshooting</div>
+    <div class="card">Python untuk IoT dan computer vision</div>
+    <div class="card">Komunikasi serial perangkat keras ke Python</div>
+    <div class="card">GUI desktop dengan PyQt5</div>
+    <div class="card">Integrasi hardware-software dan troubleshooting</div>
   </div>
   <h2>Selanjutnya</h2>
   <div class="card"><ul><li>Integrasi dengan manajemen gedung dan data kehadiran</li><li>Uji coba di lingkungan operasional nyata</li><li>Notifikasi otomatis, monitoring lewat aplikasi seluler, kontrol pintu jarak jauh</li><li>Deteksi liveness agar tidak bisa dikelabui foto</li></ul></div>
-  <p><a class="btn" href="https://github.com/Nabilahatamip/rfid-camera-authsystem" target="_blank" rel="noopener">💻 Lihat kode di GitHub</a></p>
+  <p><a class="btn" href="https://github.com/Nabilahatamip/rfid-camera-authsystem" target="_blank" rel="noopener">Lihat kode di GitHub</a></p>
   <p class="note">Dataset wajah, file encoding, dan data kartu tidak dipublikasikan demi privasi.</p>
 </section>
 </div>
@@ -157,22 +157,22 @@ counts();
 function acc(box){$$("button.acc",box).forEach(b=>b.addEventListener("click",()=>b.parentElement.classList.toggle("open")))}
 // flow
 const N={
-start:["▶ Mulai","Pengguna ingin masuk ke area terbatas. Kamera aktif dan reader RFID menunggu kartu.","round"],
+start:["Mulai","Pengguna ingin masuk ke area terbatas. Kamera aktif dan reader RFID menunggu kartu.","round"],
 rfid:["1 · Tempel kartu RFID","Kartu RFID pasif didekatkan ke reader. UID dibaca lewat komunikasi serial (PySerial) dan dikirim ke program Python. Uji awalnya memakai Arduino IDE.",""],
 cam:["2 · Kamera menangkap wajah","OpenCV menangkap video real-time dan mendeteksi wajah. Fitur wajah (encoding) dihitung dengan deep learning lalu dibandingkan dengan data referensi.",""],
 check:["3 · Data sesuai?","UID kartu dan identitas wajah harus menunjuk ke orang yang sama di database. Sistem berhenti sejenak untuk memastikan keduanya cocok.","dec"],
-grant:["✅ Akses diberikan","Pintu terbuka, log tercatat real-time, dan GUI menampilkan nama serta status pengguna.",""],
-deny:["❌ Akses ditolak","Pengguna diminta mengulang dari awal dengan menempelkan kartu kembali ke reader.",""],
-done:["⏹ Selesai","Proses selesai dan sistem kembali siaga menunggu pengguna berikutnya.","round"]};
+grant:["Akses diberikan","Pintu terbuka, log tercatat real-time, dan GUI menampilkan nama serta status pengguna.",""],
+deny:["Akses ditolak","Pengguna diminta mengulang dari awal dengan menempelkan kartu kembali ke reader.",""],
+done:["Selesai","Proses selesai dan sistem kembali siaga menunggu pengguna berikutnya.","round"]};
 const nd=id=>`<div class="item node ${N[id][2]}" data-id="${id}"><button class="acc"><span>${N[id][0]}</span></button><div class="det">${N[id][1]}</div></div>`;
 const ar='<div class="arrow"></div>';
 $("#flow").innerHTML=nd("start")+ar+nd("rfid")+ar+nd("cam")+ar+nd("check")+ar+
 `<div class="branch"><div class="col"><span class="lbl y">YA</span>${nd("grant")}${ar}${nd("done")}</div><div class="col"><span class="lbl n">TIDAK</span>${nd("deny")}</div></div>`;
 acc($("#flow"));
 const S={
-ok:{p:["start","rfid","cam","check","grant","done"],t:"✅ Kartu terdaftar dan wajah cocok: akses diberikan.",c:"ok",w:"grant"},
-face:{p:["start","rfid","cam","check","deny"],t:"⚠️ Kartu valid tetapi wajah tidak cocok dengan pemilik kartu: akses ditolak. Ulangi dari awal.",c:"bad",w:"deny"},
-card:{p:["start","rfid","check","deny"],t:"🚫 UID kartu tidak ada di database: akses ditolak sebelum wajah dinilai.",c:"bad",w:"deny"}};
+ok:{p:["start","rfid","cam","check","grant","done"],t:"Kartu terdaftar dan wajah cocok: akses diberikan.",c:"ok",w:"grant"},
+face:{p:["start","rfid","cam","check","deny"],t:"Kartu valid tetapi wajah tidak cocok dengan pemilik kartu: akses ditolak. Ulangi dari awal.",c:"bad",w:"deny"},
+card:{p:["start","rfid","check","deny"],t:"UID kartu tidak ada di database: akses ditolak sebelum wajah dinilai.",c:"bad",w:"deny"}};
 let tm=[];
 $$(".sim button").forEach(b=>b.onclick=()=>{
   tm.forEach(clearTimeout);tm=[];
@@ -210,7 +210,7 @@ $("#filters").innerHTML=["Semua",...Object.keys(P)].map(k=>`<button style="--c:$
 $$("#filters button").forEach(b=>b.onclick=()=>{f=b.textContent;$$("#filters button").forEach(x=>x.classList.toggle("on",x===b));tl()});
 tl();
 // challenges
-const C=[["🐢 Pembacaan sistem lambat","Alur program disesuaikan agar pemrosesan frame dan pembacaan kartu lebih lancar."],["🎯 Hasil pengenalan tidak sesuai","Dataset ditambah dengan potret wajah dari berbagai sudut dan alur verifikasi disempurnakan."],["🔗 Menyatukan RFID dan kamera","Kedua input digabung dalam satu alur, dengan jeda verifikasi agar data kartu dan wajah benar-benar cocok."]];
+const C=[["Pembacaan sistem lambat","Alur program disesuaikan agar pemrosesan frame dan pembacaan kartu lebih lancar."],["Hasil pengenalan tidak sesuai","Dataset ditambah dengan potret wajah dari berbagai sudut dan alur verifikasi disempurnakan."],["Menyatukan RFID dan kamera","Kedua input digabung dalam satu alur, dengan jeda verifikasi agar data kartu dan wajah benar-benar cocok."]];
 $("#ch").innerHTML=C.map(c=>`<div class="item"><button class="acc"><span>${c[0]}</span><span>＋</span></button><div class="det">${c[1]}</div></div>`).join("");
 acc($("#ch"));
 </script>
