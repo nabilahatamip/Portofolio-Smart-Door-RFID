@@ -69,10 +69,11 @@ button.acc:hover{border-color:var(--acc)}
 .node.lit button.acc{border-color:var(--acc);background:var(--hl);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 25%,transparent);transform:scale(1.03)}
 .node.win button.acc{border-color:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 30%,transparent)}
 .node.lose button.acc{border-color:var(--bad);box-shadow:0 0 0 3px color-mix(in srgb,var(--bad) 30%,transparent)}
-.sim{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.sim{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 14px}
+#b h2,#b .note{text-align:center}
 .sim button{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 14px;cursor:pointer}
 .sim button:hover{border-color:var(--acc)}
-#res{min-height:48px;border-radius:12px;padding:12px 14px;margin:14px 0 0;font-weight:600;background:var(--card);border:1px solid var(--line);color:var(--mut)}
+#res{min-height:48px;text-align:center;border-radius:12px;padding:12px 14px;margin:0 auto 22px;max-width:640px;font-weight:600;background:var(--card);border:1px solid var(--line);color:var(--mut)}
 #res.ok{color:var(--ok);border-color:var(--ok)}#res.bad{color:var(--bad);border-color:var(--bad)}
 /* timeline */
 .filters{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
@@ -131,8 +132,8 @@ a.btn.o{background:none;color:var(--acc);border:1px solid var(--acc)}
     <button data-s="face">Valid card, different face</button>
     <button data-s="card">Unknown card</button>
   </div>
-  <div class="flow" id="flow"></div>
   <div id="res">Pilih skenario untuk memulai simulasi.</div>
+  <div class="flow" id="flow"></div>
 </section>
 
 <section id="c">
