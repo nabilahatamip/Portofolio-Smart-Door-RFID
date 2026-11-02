@@ -44,14 +44,17 @@ button.acc:hover{border-color:var(--acc)}
 .item{margin:0 0 8px}
 /* gallery */
 .fig{margin:0 0 16px;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.fig img{display:block;width:100%;height:auto;aspect-ratio:984/792;object-fit:cover;cursor:zoom-in}
 .fig figcaption{padding:12px 16px;font-size:14px;color:var(--mut)}
 .fig figcaption b{display:block;color:var(--ink);font-size:15px;margin-bottom:2px}
 .gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
 .gal .fig{margin:0}
+.ph{position:relative;display:block;cursor:zoom-in;line-height:0}
+.ph img{display:block;width:100%;height:auto;aspect-ratio:984/792;object-fit:cover}
+.ph .cover{position:absolute;left:var(--x,25%);top:var(--y,18%);width:var(--w,50%);height:var(--h,60%);background:rgba(255,255,255,.55);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:12px;overflow:hidden}
+.ph .cover::after{content:"";position:absolute;inset:0;background:url("logo.png") center/75% no-repeat;filter:grayscale(1);opacity:.55}
 #lb{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:16px;z-index:9;cursor:zoom-out}
 #lb.on{display:flex}
-#lb img{max-width:100%;max-height:100%;border-radius:10px}
+#lb .ph{width:min(100%,900px);cursor:zoom-out;border-radius:10px;overflow:hidden}
 /* flow */
 .flow{display:flex;flex-direction:column;align-items:center;gap:0}
 .node{width:min(100%,360px)}
@@ -80,7 +83,7 @@ button.acc:hover{border-color:var(--acc)}
 .bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin:0 0 14px}
 .bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .5s}
 .tl button.acc{border-left:6px solid var(--c)}
-.tl .wk{font-weight:700;min-width:62px}
+.tl .wk{font-weight:700;min-width:78px}
 .tl .ti{flex:1}
 .tl small{color:var(--mut);display:block}
 ul{padding-left:20px;margin:6px 0}
@@ -146,8 +149,8 @@ a.btn.o{background:none;color:var(--acc);border:1px solid var(--acc)}
   <h2>Project Documentation</h2>
   <p class="note">Ketuk gambar untuk memperbesar.</p>
   <div class="gal">
-    <figure class="fig"><img src="gui.jpg" alt="GUI Smart Door System"><figcaption><b>Smart Door System GUI</b>Antarmuka PyQt5 yang menampilkan kamera, nama, dan status akses (Granted).</figcaption></figure>
-    <figure class="fig"><img src="face.jpg" alt="Face recognition real-time dengan OpenCV"><figcaption><b>Real-time Face Recognition</b>Wajah terdeteksi lewat kamera dan diberi label nama menggunakan OpenCV dan face_recognition.</figcaption></figure>
+    <figure class="fig"><div class="ph" style="--x:25%;--y:15%;--w:50%;--h:65%"><img src="gui.jpg" alt="GUI Smart Door System"><div class="cover"></div></div><figcaption><b>Smart Door System GUI</b>Antarmuka PyQt5 yang menampilkan kamera, nama, dan status akses (Granted).</figcaption></figure>
+    <figure class="fig"><div class="ph" style="--x:20%;--y:10%;--w:60%;--h:75%"><img src="face.jpg" alt="Face recognition real-time dengan OpenCV"><div class="cover"></div></div><figcaption><b>Real-time Face Recognition</b>Wajah terdeteksi lewat kamera dan diberi label nama menggunakan OpenCV dan face_recognition.</figcaption></figure>
   </div>
 </section>
 
@@ -163,13 +166,13 @@ a.btn.o{background:none;color:var(--acc);border:1px solid var(--acc)}
     <div class="card">GUI desktop dengan PyQt5</div>
     <div class="card">Integrasi hardware-software dan troubleshooting</div>
   </div>
-  <h2>What's Next</h2>
+  <h2>What’s Next</h2>
   <div class="card"><ul><li>Integrasi dengan manajemen gedung dan data kehadiran</li><li>Uji coba di lingkungan operasional nyata</li><li>Notifikasi otomatis, monitoring lewat aplikasi seluler, kontrol pintu jarak jauh</li><li>Deteksi liveness agar tidak bisa dikelabui foto</li></ul></div>
   <p><a class="btn" href="https://github.com/nabilahatamip/rfid-camera-auth-system" target="_blank" rel="noopener">Lihat kode di GitHub</a></p>
   <p class="note">Dataset wajah, file encoding, dan data kartu tidak dipublikasikan demi privasi.</p>
 </section>
 </div>
-<div id="lb" role="dialog" aria-label="Image preview"><img alt=""></div>
+<div id="lb" role="dialog" aria-label="Image preview"></div>
 
 <script>
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -180,7 +183,7 @@ function counts(){$$("[data-n]").forEach(e=>{const t=+e.dataset.n;let i=0;const 
 $$("nav button").forEach(b=>b.onclick=()=>{$$("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));$$("section").forEach(s=>s.classList.toggle("on",s.id===b.dataset.t));if(b.dataset.t==="a")counts();if(b.dataset.t==="c")setTimeout(()=>$("#pb").style.width="100%",50)});
 counts();
 // lightbox
-document.addEventListener("click",e=>{const i=e.target.closest(".fig img"),l=$("#lb");if(i){$("img",l).src=i.src;l.classList.add("on")}else if(e.target.closest("#lb")){l.classList.remove("on")}});
+document.addEventListener("click",e=>{const p=e.target.closest(".fig .ph"),l=$("#lb");if(p){l.innerHTML="";l.appendChild(p.cloneNode(true));l.classList.add("on")}else if(e.target.closest("#lb")){l.classList.remove("on")}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("#lb").classList.remove("on")});
 // accordion helper
 function acc(box){$$("button.acc",box).forEach(b=>b.addEventListener("click",()=>b.parentElement.classList.toggle("open")))}
@@ -232,7 +235,7 @@ const T=[
 [14,"26–30 May","Report","Finalization and presentation","Finalisasi laporan dan presentasi hasil."]];
 let f="All";
 function tl(){
-  $("#tl").innerHTML=T.filter(x=>f==="All"||x[2]===f).map(x=>`<div class="item" style="--c:${P[x[2]]}"><button class="acc"><span class="wk">Wk ${x[0]}</span><span class="ti">${x[3]}<small>${x[1]} · ${x[2]}</small></span><span>＋</span></button><div class="det">${x[4]}</div></div>`).join("");
+  $("#tl").innerHTML=T.filter(x=>f==="All"||x[2]===f).map(x=>`<div class="item" style="--c:${P[x[2]]}"><button class="acc"><span class="wk">Week ${x[0]}</span><span class="ti">${x[3]}<small>${x[1]} · ${x[2]}</small></span><span>＋</span></button><div class="det">${x[4]}</div></div>`).join("");
   acc($("#tl"));
 }
 $("#filters").innerHTML=["All",...Object.keys(P)].map(k=>`<button style="--c:${P[k]||"var(--acc)"}" class="${k==="All"?"on":""}">${k}</button>`).join("");
