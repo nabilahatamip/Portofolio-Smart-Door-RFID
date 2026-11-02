@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Smart Door System · Portofolio Internship</title>
+<style>
+:root{--bg:#faf8f5;--card:#fff;--ink:#1c1b1a;--mut:#6b6762;--line:#e6e1da;--acc:#d6232f;--ok:#15803d;--bad:#b91c1c;--hl:#fff0f0;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141312;--card:#1e1c1a;--ink:#f3efe9;--mut:#a39d94;--line:#34302c;--acc:#ff5560;--ok:#4ade80;--bad:#f87171;--hl:#2a1a1b;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141312;--card:#1e1c1a;--ink:#f3efe9;--mut:#a39d94;--line:#34302c;--acc:#ff5560;--ok:#4ade80;--bad:#f87171;--hl:#2a1a1b;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+header{padding:28px 0 12px;position:relative}
+.tag{display:inline-block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);font-weight:700}
+h1{font-size:clamp(28px,6vw,44px);line-height:1.1;margin:6px 0 8px}
+.sub{color:var(--mut);max-width:620px;margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:4px 12px;font-size:13px}
+#theme{position:absolute;right:0;top:20px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;width:38px;height:38px;cursor:pointer;font-size:16px}
+nav{display:flex;gap:6px;overflow-x:auto;margin:18px 0;padding-bottom:4px;border-bottom:1px solid var(--line)}
+nav button{flex:none;border:0;background:none;color:var(--mut);font:inherit;font-weight:600;padding:10px 14px;border-radius:10px 10px 0 0;cursor:pointer;border-bottom:3px solid transparent}
+nav button[aria-selected="true"]{color:var(--acc);border-bottom-color:var(--acc)}
+section{display:none;animation:in .35s ease}
+section.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h2{font-size:22px;margin:4px 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:0 0 14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 16px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center}
+.stat b{display:block;font-size:34px;color:var(--acc);line-height:1}
+.stat span{font-size:13px;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+button.acc{width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:center;transition:.2s}
+button.acc:hover{border-color:var(--acc)}
+.det{display:none;color:var(--mut);font-size:14.5px;padding:8px 6px 4px}
+.item.open .det{display:block}
+.item.open button.acc{border-color:var(--acc);background:var(--hl)}
+.item{margin:0 0 8px}
+/* flow */
+.flow{display:flex;flex-direction:column;align-items:center;gap:0}
+.node{width:min(100%,360px)}
+.node button.acc{justify-content:center;text-align:center;font-weight:600}
+.node.round button.acc{border-radius:99px}
+.node.dec button.acc{border-style:dashed;border-width:2px}
+.arrow{height:22px;width:2px;background:var(--line);position:relative}
+.arrow:after{content:"";position:absolute;bottom:-1px;left:-4px;border:5px solid transparent;border-top-color:var(--line);border-bottom:0}
+.branch{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:640px}
+.col{display:flex;flex-direction:column;align-items:center}
+.col .node{width:100%}
+.lbl{font-size:12px;font-weight:700;margin-bottom:4px}
+.lbl.y{color:var(--ok)}.lbl.n{color:var(--bad)}
+.node.lit button.acc{border-color:var(--acc);background:var(--hl);box-shadow:0 0 0 3px color-mix(in srgb,var(--acc) 25%,transparent);transform:scale(1.03)}
+.node.win button.acc{border-color:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 30%,transparent)}
+.node.lose button.acc{border-color:var(--bad);box-shadow:0 0 0 3px color-mix(in srgb,var(--bad) 30%,transparent)}
+.sim{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.sim button{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:10px 14px;cursor:pointer}
+.sim button:hover{border-color:var(--acc)}
+#res{min-height:48px;border-radius:12px;padding:12px 14px;margin:14px 0 0;font-weight:600;background:var(--card);border:1px solid var(--line);color:var(--mut)}
+#res.ok{color:var(--ok);border-color:var(--ok)}#res.bad{color:var(--bad);border-color:var(--bad)}
+/* timeline */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.filters button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;padding:5px 12px;cursor:pointer}
+.filters button.on{background:var(--c,var(--acc));color:#fff;border-color:transparent}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin:0 0 14px}
+.bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .5s}
+.tl button.acc{border-left:6px solid var(--c)}
+.tl .wk{font-weight:700;min-width:62px}
+.tl .ti{flex:1}
+.tl small{color:var(--mut);display:block}
+ul{padding-left:20px;margin:6px 0}
+a.btn{display:inline-block;margin:6px 8px 0 0;padding:10px 16px;border-radius:12px;background:var(--acc);color:#fff;text-decoration:none;font-weight:600}
+a.btn.o{background:none;color:var(--acc);border:1px solid var(--acc)}
+.note{font-size:13px;color:var(--mut)}
+@media (max-width:480px){.branch{gap:8px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <button id="theme" aria-label="Ganti tema">◐</button>
+  <span class="tag">Internship · PUI-PT Intelligent Sensing-IoT</span>
+  <h1>🔐 Smart Door System</h1>
+  <p class="sub">Akses kontrol dua faktor: pintu hanya terbuka kalau <b>kartu RFID</b> dan <b>wajah</b> sama-sama cocok. Dibuat oleh Nabila Hatami Putri, Teknik Telekomunikasi, Universitas Telkom.</p>
+  <div class="chips"><span class="chip">🐍 Python</span><span class="chip">👁️ OpenCV</span><span class="chip">🧠 face_recognition</span><span class="chip">🖥️ PyQt5</span><span class="chip">📡 PySerial</span><span class="chip">🔌 Arduino</span></div>
+</header>
+
+<nav role="tablist">
+  <button role="tab" aria-selected="true" data-t="a">Ringkasan</button>
+  <button role="tab" aria-selected="false" data-t="b">Alur &amp; Simulasi</button>
+  <button role="tab" aria-selected="false" data-t="c">Timeline</button>
+  <button role="tab" aria-selected="false" data-t="d">Hasil &amp; Belajar</button>
+</nav>
+
+<section id="a" class="on">
+  <div class="stats">
+    <div class="stat"><b data-n="2">0</b><span>faktor autentikasi</span></div>
+    <div class="stat"><b data-n="14">0</b><span>minggu pengerjaan</span></div>
+    <div class="stat"><b data-n="3">0</b><span>anggota tim</span></div>
+    <div class="stat"><b data-n="5">0</b><span>tahap kegiatan</span></div>
+  </div>
+  <div class="card"><h2>Masalahnya</h2><p>Kartu akses saja bisa dipinjam atau dicuri, sedangkan wajah saja bisa salah dikenali. Proyek ini menggabungkan keduanya supaya hanya orang yang benar-benar terverifikasi yang bisa masuk, sekaligus mencatat log akses secara real-time.</p></div>
+  <div class="card"><h2>Peranku</h2><ul><li>Membuat dan menguji sistem pengenalan wajah dengan OpenCV</li><li>Membuat pembacaan kartu RFID lewat komunikasi serial</li><li>Mengintegrasikan keduanya menjadi autentikasi ganda</li><li>Troubleshooting, dokumentasi, dan laporan akhir</li></ul><p class="note">Pembimbing lapangan: Shafa Tanaya Paramesti, S.T. dan Muhammad Surya Sanjiwani, S.T.</p></div>
+  <p>Coba tab <b>Alur &amp; Simulasi</b> untuk melihat sistemnya bekerja. 👆</p>
+</section>
+
+<section id="b">
+  <h2>Alur sistem</h2>
+  <p class="note">Ketuk setiap kotak untuk melihat penjelasannya, atau jalankan simulasi di bawah.</p>
+  <div class="sim">
+    <button data-s="ok">✅ Kartu valid + wajah cocok</button>
+    <button data-s="face">⚠️ Kartu valid, wajah beda</button>
+    <button data-s="card">🚫 Kartu tidak dikenal</button>
+  </div>
+  <div class="flow" id="flow"></div>
+  <div id="res">Pilih skenario untuk memulai simulasi.</div>
+</section>
+
+<section id="c">
+  <h2>Timeline 24 Feb – 30 Mei 2025</h2>
+  <div class="bar"><i id="pb"></i></div>
+  <div class="filters" id="filters"></div>
+  <div class="tl" id="tl"></div>
+  <p class="note">Pembagian minggu adalah estimasi berdasarkan jadwal laporan.</p>
+</section>
+
+<section id="d">
+  <h2>Hasil</h2>
+  <div class="card"><ul><li>Prototipe akses kontrol terintegrasi RFID + face recognition yang berfungsi</li><li>Sistem berhenti sejenak saat wajah terdeteksi untuk memastikan wajah dan kartu cocok</li><li>Pencatatan log penggunaan real-time</li><li>GUI Smart Door System: menampilkan kamera, nama, status, dan data RFID</li><li>Dokumentasi teknis, laporan akhir, dan kode di GitHub</li></ul></div>
+  <h2>Tantangan &amp; solusi</h2>
+  <div id="ch"></div>
+  <h2>Yang kupelajari</h2>
+  <div class="grid">
+    <div class="card">🐍 Python untuk IoT dan computer vision</div>
+    <div class="card">📡 Komunikasi serial perangkat keras ke Python</div>
+    <div class="card">🖥️ GUI desktop dengan PyQt5</div>
+    <div class="card">🧩 Integrasi hardware-software dan troubleshooting</div>
+  </div>
+  <h2>Selanjutnya</h2>
+  <div class="card"><ul><li>Integrasi dengan manajemen gedung dan data kehadiran</li><li>Uji coba di lingkungan operasional nyata</li><li>Notifikasi otomatis, monitoring lewat aplikasi seluler, kontrol pintu jarak jauh</li><li>Deteksi liveness agar tidak bisa dikelabui foto</li></ul></div>
+  <p><a class="btn" href="https://github.com/Nabilahatamip/rfid-camera-authsystem" target="_blank" rel="noopener">💻 Lihat kode di GitHub</a></p>
+  <p class="note">Dataset wajah, file encoding, dan data kartu tidak dipublikasikan demi privasi.</p>
+</section>
+</div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+// theme
+$("#theme").onclick=()=>{const r=document.documentElement,d=matchMedia("(prefers-color-scheme:dark)").matches;const cur=r.dataset.theme||(d?"dark":"light");r.dataset.theme=cur==="dark"?"light":"dark"};
+// tabs
+function counts(){$$("[data-n]").forEach(e=>{const t=+e.dataset.n;let i=0;const k=setInterval(()=>{i++;e.textContent=i;if(i>=t)clearInterval(k)},500/t)})}
+$$("nav button").forEach(b=>b.onclick=()=>{$$("nav button").forEach(x=>x.setAttribute("aria-selected",x===b));$$("section").forEach(s=>s.classList.toggle("on",s.id===b.dataset.t));if(b.dataset.t==="a")counts();if(b.dataset.t==="c")setTimeout(()=>$("#pb").style.width="100%",50)});
+counts();
+// accordion helper
+function acc(box){$$("button.acc",box).forEach(b=>b.addEventListener("click",()=>b.parentElement.classList.toggle("open")))}
+// flow
+const N={
+start:["▶ Mulai","Pengguna ingin masuk ke area terbatas. Kamera aktif dan reader RFID menunggu kartu.","round"],
+rfid:["1 · Tempel kartu RFID","Kartu RFID pasif didekatkan ke reader. UID dibaca lewat komunikasi serial (PySerial) dan dikirim ke program Python. Uji awalnya memakai Arduino IDE.",""],
+cam:["2 · Kamera menangkap wajah","OpenCV menangkap video real-time dan mendeteksi wajah. Fitur wajah (encoding) dihitung dengan deep learning lalu dibandingkan dengan data referensi.",""],
+check:["3 · Data sesuai?","UID kartu dan identitas wajah harus menunjuk ke orang yang sama di database. Sistem berhenti sejenak untuk memastikan keduanya cocok.","dec"],
+grant:["✅ Akses diberikan","Pintu terbuka, log tercatat real-time, dan GUI menampilkan nama serta status pengguna.",""],
+deny:["❌ Akses ditolak","Pengguna diminta mengulang dari awal dengan menempelkan kartu kembali ke reader.",""],
+done:["⏹ Selesai","Proses selesai dan sistem kembali siaga menunggu pengguna berikutnya.","round"]};
+const nd=id=>`<div class="item node ${N[id][2]}" data-id="${id}"><button class="acc"><span>${N[id][0]}</span></button><div class="det">${N[id][1]}</div></div>`;
+const ar='<div class="arrow"></div>';
+$("#flow").innerHTML=nd("start")+ar+nd("rfid")+ar+nd("cam")+ar+nd("check")+ar+
+`<div class="branch"><div class="col"><span class="lbl y">YA</span>${nd("grant")}${ar}${nd("done")}</div><div class="col"><span class="lbl n">TIDAK</span>${nd("deny")}</div></div>`;
+acc($("#flow"));
+const S={
+ok:{p:["start","rfid","cam","check","grant","done"],t:"✅ Kartu terdaftar dan wajah cocok: akses diberikan.",c:"ok",w:"grant"},
+face:{p:["start","rfid","cam","check","deny"],t:"⚠️ Kartu valid tetapi wajah tidak cocok dengan pemilik kartu: akses ditolak. Ulangi dari awal.",c:"bad",w:"deny"},
+card:{p:["start","rfid","check","deny"],t:"🚫 UID kartu tidak ada di database: akses ditolak sebelum wajah dinilai.",c:"bad",w:"deny"}};
+let tm=[];
+$$(".sim button").forEach(b=>b.onclick=()=>{
+  tm.forEach(clearTimeout);tm=[];
+  $$(".node").forEach(n=>n.classList.remove("lit","win","lose"));
+  const s=S[b.dataset.s],r=$("#res");r.className="";r.textContent="Memproses…";
+  s.p.forEach((id,i)=>tm.push(setTimeout(()=>{
+    $$(".node").forEach(n=>n.classList.remove("lit"));
+    $(`.node[data-id="${id}"]`).classList.add("lit");
+    if(i===s.p.length-1){const n=$(`.node[data-id="${id}"]`);n.classList.remove("lit");n.classList.add(s.c==="ok"?"win":"lose");r.className=s.c;r.textContent=s.t}
+  },i*700)));
+});
+// timeline
+const P={Belajar:"#6366f1",Kamera:"#0ea5e9",RFID:"#f59e0b",Integrasi:"#10b981",Uji:"#ef4444",Laporan:"#8b5cf6"};
+const T=[
+[1,"24–28 Feb","Belajar","Pengenalan sistem akses kontrol","Memahami dasar sistem akses kontrol, RFID, dan face recognition lewat studi literatur."],
+[2,"3–7 Mar","RFID","Percobaan baca kartu dengan Arduino","Percobaan sederhana membaca ID kartu memakai Arduino IDE."],
+[3,"10–14 Mar","Belajar","Observasi dan setup lingkungan","Mengamati sistem yang sudah ada di PUI-PT IS-IoT dan menyiapkan Python, OpenCV, dan dlib."],
+[4,"17–21 Mar","Kamera","Dataset wajah","Membuat dataset potret wajah dari berbagai sudut dan percobaan face recognition awal."],
+[5,"24–28 Mar","Kamera","Deteksi dan encoding wajah","Membangun sistem kamera real-time dengan OpenCV untuk mendeteksi dan mencocokkan wajah."],
+[6,"31 Mar–4 Apr","RFID","RFID ke Python via serial","Membuat pembacaan kartu RFID yang dikirim ke program Python."],
+[7,"7–11 Apr","RFID","Pencocokan UID dengan data pengguna","UID kartu dicocokkan dengan data pengguna yang tersimpan."],
+[8,"14–18 Apr","Uji","Uji per modul","Menguji kamera dan RFID secara terpisah."],
+[9,"21–25 Apr","Integrasi","Autentikasi ganda","Menggabungkan hasil RFID dan face recognition dalam satu alur verifikasi."],
+[10,"28 Apr–2 Mei","Integrasi","GUI Smart Door System","Membuat antarmuka PyQt5 dan pencatatan log akses."],
+[11,"5–9 Mei","Uji","Uji menyeluruh","Menjalankan seluruh sistem dari kamera, RFID, sampai verifikasi, dan mencari error."],
+[12,"12–16 Mei","Uji","Troubleshooting","Memperbaiki pembacaan lambat dan hasil tidak sesuai dengan menyesuaikan alur program."],
+[13,"19–23 Mei","Laporan","Penyusunan laporan","Menyusun laporan akhir dan bahan presentasi."],
+[14,"26–30 Mei","Laporan","Finalisasi dan presentasi","Finalisasi laporan dan presentasi hasil."]];
+let f="Semua";
+function tl(){
+  $("#tl").innerHTML=T.filter(x=>f==="Semua"||x[2]===f).map(x=>`<div class="item" style="--c:${P[x[2]]}"><button class="acc"><span class="wk">Mgg ${x[0]}</span><span class="ti">${x[3]}<small>${x[1]} · ${x[2]}</small></span><span>＋</span></button><div class="det">${x[4]}</div></div>`).join("");
+  acc($("#tl"));
+}
+$("#filters").innerHTML=["Semua",...Object.keys(P)].map(k=>`<button style="--c:${P[k]||"var(--acc)"}" class="${k==="Semua"?"on":""}">${k}</button>`).join("");
+$$("#filters button").forEach(b=>b.onclick=()=>{f=b.textContent;$$("#filters button").forEach(x=>x.classList.toggle("on",x===b));tl()});
+tl();
+// challenges
+const C=[["🐢 Pembacaan sistem lambat","Alur program disesuaikan agar pemrosesan frame dan pembacaan kartu lebih lancar."],["🎯 Hasil pengenalan tidak sesuai","Dataset ditambah dengan potret wajah dari berbagai sudut dan alur verifikasi disempurnakan."],["🔗 Menyatukan RFID dan kamera","Kedua input digabung dalam satu alur, dengan jeda verifikasi agar data kartu dan wajah benar-benar cocok."]];
+$("#ch").innerHTML=C.map(c=>`<div class="item"><button class="acc"><span>${c[0]}</span><span>＋</span></button><div class="det">${c[1]}</div></div>`).join("");
+acc($("#ch"));
+</script>
+</body>
+</html>
